@@ -3,6 +3,7 @@
 use App\Http\Controllers\Auth\Api\AddressController;
 use App\Http\Controllers\Auth\Api\LoginController;
 use App\Http\Controllers\Auth\Api\RegisterController;
+use App\Http\Controllers\Auth\Api\UserController;
 use App\Http\Controllers\CepController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -27,4 +28,5 @@ Route::prefix('auth')->group(function(){
     Route::post('logout', [LoginController::class, 'logout'])->middleware('auth:sanctum');
     Route::post('register', [RegisterController::class, 'register']);
     Route::post('registerAddress', [AddressController::class, 'registerAddress']);
+    Route::post('password', [UserController::class, 'updatePassword']);
 });

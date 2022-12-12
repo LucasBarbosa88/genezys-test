@@ -25,8 +25,9 @@ class LoginController extends Controller
 
     public function logout()
     {
-        auth()->user()->tokens()->delete();
-
+        $getUser = auth()->user();
+        $user = User::find($getUser->id);
+        $user->tokens()->delete();
         return response()
             ->json([], 204); 
     }
