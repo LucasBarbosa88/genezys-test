@@ -10,9 +10,9 @@ class CepController extends Controller
 {
     public function getCep(Request $request)
     {
-        $url = sprintf('http://cep.correiocontrol.com.br/%s.json', $request->get('cep'));
+        $cep = preg_replace("/[^0-9]/", "", $request->get('cep'));
+        $url = 'http://viacep.com.br/ws/' . $cep . '/json/';
         $json = json_decode(file_get_contents($url), true);
-
-        return Response::json($json);
+        return $json;
     }
 }
