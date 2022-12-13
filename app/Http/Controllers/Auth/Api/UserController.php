@@ -12,7 +12,7 @@ class UserController extends Controller
 {
     public function updatePassword(Request $request)
     {
-        $user = auth()->user();
+        $user = User::where('email', $request->email)->first();
         $data = UpdatePasswordRequest::validate($request);
         $data['user_id'] = $user->id;
         $updatePasswordService = new UpdatePasswordService($data);

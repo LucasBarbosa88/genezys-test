@@ -27,7 +27,7 @@ Route::prefix('auth')->group(function(){
         Route::get('users', [UserController::class, 'getAllUsers']);
     });
     Route::post('register', [RegisterController::class, 'register']);
-    Route::post('registerAddress', [AddressController::class, 'registerAddress']);
-    Route::post('password', [UserController::class, 'updatePassword']);
+    Route::post('register-address', [AddressController::class, 'registerAddress']);
 });
+Route::post('password', [UserController::class, 'updatePassword']);
 Route::post('login', [LoginController::class, 'authenticate'])->name('login');
