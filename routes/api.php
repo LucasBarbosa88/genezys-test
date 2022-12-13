@@ -20,15 +20,14 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
 Route::get('get-cep', [ApiCepController::class, 'getCep']);
 Route::prefix('auth')->group(function(){
-    Route::post('logout', [LoginController::class, 'logout'])->middleware('auth:sanctum');
+    Route::group(['middleware' => 'auth:sanctum'], function (){
+        Route::post('logout', [LoginController::class, 'logout']);
+        Route::get('users', [UserController::class, 'getAllUsers']);
+    });
     Route::post('register', [RegisterController::class, 'register']);
     Route::post('registerAddress', [AddressController::class, 'registerAddress']);
     Route::post('password', [UserController::class, 'updatePassword']);
-    Route::get('users', [UserController::class, 'getAllUsers']);
 });
-Route::post('login', [LoginController::class, 'login'])->name('login');
+Route::post('login', [LoginController::class, 'authenticate'])->name('login');

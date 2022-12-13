@@ -4,12 +4,13 @@ namespace App\Http\Controllers\Auth\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class LoginController extends Controller
 {
-    public function login(Request $request)
+    public function authenticate(Request $request)
     {
         $credentials = $request->only('email', 'password');
         if(!auth()->attempt($credentials)) abort(401, 'Invalid Credentials!');
@@ -23,12 +24,10 @@ class LoginController extends Controller
         ]);
     }
 
-    public function logout()
+    public function logout(Request $request): JsonResponse
     {
-        $getUser = auth()->user();
-        $user = User::find($getUser->id);
-        $user->tokens()->delete();
-        return response()
-            ->json([], 204); 
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+        return response()->json('Successfully logged out');
     }
 }
