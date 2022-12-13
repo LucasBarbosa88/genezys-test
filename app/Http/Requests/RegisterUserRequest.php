@@ -23,6 +23,7 @@ class RegisterUserRequest extends UserBaseRequest
             ],
             "password" => [
                 "required",
+                "confirmed",
                 "string"
             ]
         ];
