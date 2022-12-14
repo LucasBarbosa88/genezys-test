@@ -2,7 +2,7 @@
 
 composer install
 
-Create a copi of .env.example: cp .env.example .env
+Create a copy of .env.example: cp .env.example .env
 
 To create the tables run the following command:
 php artisan migrate
