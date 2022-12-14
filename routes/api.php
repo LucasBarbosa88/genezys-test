@@ -29,5 +29,6 @@ Route::prefix('auth')->group(function(){
     Route::post('register', [RegisterController::class, 'register']);
     Route::post('register-address', [AddressController::class, 'registerAddress']);
 });
-Route::post('password', [UserController::class, 'updatePassword']);
+Route::post('recovery-password', [RegisterController::class, 'recovery']);
+Route::get('password', [UserController::class, 'updatePassword'])->name('password.reset');
 Route::post('login', [LoginController::class, 'authenticate'])->name('login');

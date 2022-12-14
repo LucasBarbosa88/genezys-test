@@ -6,7 +6,10 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\RegisterUserRequest;
 use App\Models\User;
 use App\Services\Models\User\RegisterUserService;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 
 class RegisterController extends Controller
 {
@@ -36,9 +39,30 @@ class RegisterController extends Controller
 
     public function recovery(Request $request)
     {
-        $email = $request->get('email');
-        $user = User::where('email',$email)->first();
-       // $service = new NewPasswordService($user);
-        //return response([$service->run(),200]);
+        $request->validate([
+            'email' => 'required|email|exists:users',
+        ]);
+        $email = $request->email;
+        $token = random_int(100000, 999999);
+
+        $passwordResets = DB::table('password_resets')->insert([
+            'email' => $email, 
+            'token' => $token, 
+            'created_at' => Carbon::now()
+        ]);
+        if($passwordResets) 
+        {
+           $user = User::where('email', $email)->first();
+           $user->sendPasswordResetNotification($token);
+           if($user)
+           {
+                return response()->json([
+                    'success' => true, 
+                    'message' => "Please check your email, we sent a password reset link"
+                ], 200);
+           }
+        }
+
+        return back()->with('message', 'We have e-mailed your password reset link!');
     }
 }
